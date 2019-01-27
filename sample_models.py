@@ -23,7 +23,7 @@ def simple_rnn_model(input_dim, output_dim=29):
     print(model.summary())
     return model
 
-def rnn_model(input_dim, units, activation, output_dim=29, dropout_rate=0.1):
+def rnn_model(input_dim, units, activation, output_dim=29, dropout_rate=0.5):
     """ Build a recurrent network for speech 
     """
     # Main acoustic input
@@ -49,7 +49,7 @@ def rnn_model(input_dim, units, activation, output_dim=29, dropout_rate=0.1):
 
 
 def cnn_rnn_model(input_dim, filters, kernel_size, conv_stride,
-    conv_border_mode, units, output_dim=29, dropout_rate=0.1):
+    conv_border_mode, units, output_dim=29, dropout_rate=0.5):
     """ Build a recurrent + convolutional network for speech 
     """
     # Main acoustic input
@@ -63,7 +63,7 @@ def cnn_rnn_model(input_dim, filters, kernel_size, conv_stride,
     # Add batch normalization
     bn_cnn = BatchNormalization(name='bn_conv_1d')(conv_1d)
     # Add a recurrent layer
-    simp_rnn = SimpleRNN(
+    simp_rnn = GRU(
         units,
         activation='relu',
         return_sequences=True,
@@ -106,7 +106,7 @@ def cnn_output_length(input_length, filter_size, border_mode, stride,
         output_length = input_length - dilated_filter_size + 1
     return (output_length + stride - 1) // stride
 
-def deep_rnn_model(input_dim, units, recur_layers, output_dim=29, dropout_rate=0.1):
+def deep_rnn_model(input_dim, units, recur_layers, output_dim=29, dropout_rate=0.5):
     """ Build a deep recurrent network for speech 
     """
     # Main acoustic input
@@ -130,7 +130,7 @@ def deep_rnn_model(input_dim, units, recur_layers, output_dim=29, dropout_rate=0
     print(model.summary())
     return model
 
-def bidirectional_rnn_model(input_dim, units, output_dim=29, dropout_rate=0.1):
+def bidirectional_rnn_model(input_dim, units, output_dim=29, dropout_rate=0.5):
     """ Build a bidirectional recurrent network for speech
     """
     # Main acoustic input
@@ -153,7 +153,7 @@ def bidirectional_rnn_model(input_dim, units, output_dim=29, dropout_rate=0.1):
     print(model.summary())
     return model
 
-def cnn2d_rnn_model(input_dim, filters, kernel_size, conv_stride, conv_border_mode, pool_size, units, output_dim=29, dropout_rate=0.1):
+def cnn2d_rnn_model(input_dim, filters, kernel_size, conv_stride, conv_border_mode, pool_size, units, output_dim=29, dropout_rate=0.5):
     """ Build a bidirectional recurrent network for speech
     """
     # Main acoustic input
@@ -184,7 +184,7 @@ def cnn2d_rnn_model(input_dim, filters, kernel_size, conv_stride, conv_border_mo
     print(model.summary())
     return model
 
-def final_model(input_dim=161, filters=50, kernel_size=(11,11), conv_stride=1, conv_border_mode='same', pool_size=(1,5), units=200, recur_layers=1, output_dim=29, dropout_rate=0.1):
+def final_model(input_dim=161, filters=50, kernel_size=(11,11), conv_stride=1, conv_border_mode='same', pool_size=(1,5), units=200, recur_layers=2, output_dim=29, dropout_rate=0.50):
     """ Build a deep network for speech 
     """    
     # Main acoustic input
